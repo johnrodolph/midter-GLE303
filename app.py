@@ -135,8 +135,13 @@ def main():
 
     # Conclusion Section
     elif options == "Conclusion":
-        st.subheader("Conclusion")
-        st.markdown("""In this section, you can summarize your findings from the data exploration, discuss trends observed, and suggest potential actions based on the insights gained.""")
+        st.title("Conclusion")
+        st.subheader("Subject Difficulty:")
+        st.markdown("""Maths appears to be the subject with the highest struggles while Hindi and History appear to be doing relatively better.""")
+        st.subheader("Possible Knowledge /Skill Gaps:")
+        st.markdown("""The bimodal distribution for English suggests a potential extreme divergence of language abilities in the student population. This could potentially require more tailor-made teaching strategies.""")
+        st.subheader("Outliers & Performance Gaps:")
+        st.markdown("""In some subjects, there is such a wide range of scores - for example, Geography and Science - that it would seem that most children are performing reasonably well but one or two must be lagging behind and requiring additional support.""")
 
 # Run the app
 if __name__ == "__main__":
