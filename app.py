@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
-
 @st.cache_data
 def load_data():
     df = pd.read_csv('results.csv')
@@ -13,11 +12,9 @@ def load_data():
 def main():
     st.title("Student Exam Results Exploration")
 
-    
     df = load_data()
 
-    
-    st.sidebar.title("Main Menu")
+    st.sidebar.title("Navigation")
     options = st.sidebar.radio("Select a Section:", 
                                 ["Introduction",
                                  "Descriptive Statistics", 
@@ -26,7 +23,6 @@ def main():
                                  "Correlation Matrix", 
                                  "Conclusion"])
 
-   
     if options == "Introduction":
         st.markdown(""" 
         ### Introduction
@@ -48,12 +44,10 @@ def main():
         The purpose of this exploration is to analyze the performance of students across different subjects, identify trends in their results, and assess the factors that may contribute to their success or failure. Insights gained from this analysis could be beneficial for educators and policymakers to improve educational outcomes.
         """)
 
-
         if st.checkbox("Show Raw Data"):
             st.subheader("Raw Data")
             st.write(df)
 
-  
     elif options == "Descriptive Statistics":
         st.subheader("Descriptive Statistics")
         st.write(df[['Student no.', 'Hindi', 'English', 'Science', 'Maths', 'History', 'Geography', 'Total', 'Results', 'Div']].describe())
@@ -75,6 +69,19 @@ def main():
         plt.xlabel('Scores')
         plt.ylabel('Frequency')
         st.pyplot(fig)
+
+        # Display insights for the current subject
+        insights = {
+            'Hindi': "Hindi has a balanced distribution of scores, with a great majority of students scoring high, indicating overall good performance.",
+            'English': "English scores appear bimodal, reflecting two groups of students: those who excel and those who struggle, possibly due to varied language proficiencies.",
+            'Science': "Science scores are centralized around the average, suggesting that this subject has roughly equal difficulty for most students.",
+            'Maths': "The distribution of Maths scores is skewed towards lower scores, indicating that many students find Maths particularly challenging.",
+            'History': "History shows a balanced distribution, similar to Hindi, with most students scoring well.",
+            'Geography': "Geography scores are also centralized, indicating a similar level of difficulty as Science."
+        }
+        
+        st.markdown(f"### Insights for {subject}")
+        st.write(insights[subject])
 
         # Navigation buttons for histograms
         col1, col2 = st.columns([1, 1])
@@ -128,13 +135,8 @@ def main():
 
     # Conclusion Section
     elif options == "Conclusion":
-        st.title("Conclusion")
-        st.subheader("Subject Difficulty:")
-        st.markdown(""" Maths appears to be the subject with the highest struggles while Hindi and History appear to be doing relatively better.""")
-        st.subheader("Possible Knowledge /Skill Gaps:")
-        st.markdown(""" The bimodal distribution for English suggests a potential extreme divergence of language abilities in the student population. This could potentially require more tailor-made teaching strategies.""")
-        st.subheader("Outliers & Performance Gaps:")
-        st.markdown("""In some subjects, there is such a wide range of scores - for example, Geography and Science - that it would seem that most children are performing reasonably well but one or two must be lagging behind and requiring additional support.""")
+        st.subheader("Conclusion")
+        st.markdown("""In this section, you can summarize your findings from the data exploration, discuss trends observed, and suggest potential actions based on the insights gained.""")
 
 # Run the app
 if __name__ == "__main__":
