@@ -97,34 +97,25 @@ def main():
             if st.button("➡️ Next"):
                 if st.session_state.hist_index < len(subjects) - 1:
                     st.session_state.hist_index += 1
-
-    # Box Plots Section
+# Box Plots Section
     elif options == "Box Plots":
         st.subheader("📦 Box Plots of Exam Scores")
         subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
         
-        # Session state for keeping track of current box plot index
-        if 'box_index' not in st.session_state:
-            st.session_state.box_index = 0
+        # Create a figure to hold the box plots for all subjects
+        fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(15, 10))  # Adjust rows and columns as needed
+        axes = axes.flatten()  # Flatten the array of axes for easier indexing
 
-        # Display the current subject's box plot
-        subject = subjects[st.session_state.box_index]
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sns.boxplot(y=df[subject], ax=ax, color='lightgreen')
-        plt.title(f'Box Plot of {subject} Scores', fontsize=20)
-        plt.ylabel('Scores', fontsize=14)
+        for i, subject in enumerate(subjects):
+            sns.boxplot(y=df[subject], ax=axes[i], color='lightgreen')
+            axes[i].set_title(f'Box Plot of {subject} Scores', fontsize=16)
+            axes[i].set_ylabel('Scores', fontsize=14)
+        
+        # Remove empty subplots if the number of subjects is less than the total subplots created
+        for j in range(len(subjects), len(axes)):
+            fig.delaxes(axes[j])
+
         st.pyplot(fig)
-
-        # Navigation buttons for box plots
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            if st.button("⬅️ Previous"):
-                if st.session_state.box_index > 0:
-                    st.session_state.box_index -= 1
-        with col2:
-            if st.button("➡️ Next"):
-                if st.session_state.box_index < len(subjects) - 1:
-                    st.session_state.box_index += 1
 
     # Correlation Matrix Section
     elif options == "Correlation Matrix":
