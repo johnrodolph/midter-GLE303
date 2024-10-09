@@ -17,7 +17,7 @@ def main():
     df = load_data()
 
     
-    st.sidebar.title("Navigation")
+    st.sidebar.title("Main Menu")
     options = st.sidebar.radio("Select a Section:", 
                                 ["Introduction",
                                  "Descriptive Statistics", 
