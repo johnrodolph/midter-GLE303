@@ -21,6 +21,7 @@ def main():
                                 ["Introduction",
                                  "Descriptive Statistics", 
                                  "Histograms", 
+                                 "Box Plots"
                                  "Correlation Matrix", 
                                  "Conclusion"])
 
