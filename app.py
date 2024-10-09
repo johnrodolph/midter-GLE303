@@ -21,7 +21,6 @@ def main():
                                 ["Introduction",
                                  "Descriptive Statistics", 
                                  "Histograms", 
-                                 "Box Plots", 
                                  "Correlation Matrix", 
                                  "Conclusion"])
 
@@ -99,33 +98,7 @@ def main():
                 if st.session_state.hist_index < len(subjects) - 1:
                     st.session_state.hist_index += 1
 
-    # Box Plots Section
-    elif options == "Box Plots":
-        st.subheader("📦 Box Plots of Exam Scores")
-        subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
-        
-        # Session state for keeping track of current box plot index
-        if 'box_index' not in st.session_state:
-            st.session_state.box_index = 0
-
-        # Display the current subject's box plot
-        subject = subjects[st.session_state.box_index]
-        fig, ax = plt.subplots(figsize=(12, 6))
-        sns.boxplot(y=df[subject], ax=ax, color='lightgreen')
-        plt.title(f'Box Plot of {subject} Scores', fontsize=20)
-        plt.ylabel('Scores', fontsize=14)
-        st.pyplot(fig)
-
-        # Navigation buttons for box plots
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            if st.button("⬅️ Previous"):
-                if st.session_state.box_index > 0:
-                    st.session_state.box_index -= 1
-        with col2:
-            if st.button("➡️ Next"):
-                if st.session_state.box_index < len(subjects) - 1:
-                    st.session_state.box_index += 1
+    
 
     # Correlation Matrix Section
     elif options == "Correlation Matrix":
