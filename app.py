@@ -56,47 +56,36 @@ def main():
         st.subheader("📊 Descriptive Statistics")
         st.write(df[['Student no.', 'Hindi', 'English', 'Science', 'Maths', 'History', 'Geography', 'Total', 'Results', 'Div']].describe())
 
-    # Histograms Section
+        # Histograms Section
     elif options == "Histograms":
         st.subheader("📈 Histograms of Exam Scores")
         subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
         
-        # Session state for keeping track of current histogram index
-        if 'hist_index' not in st.session_state:
-            st.session_state.hist_index = 0
+        # Create a figure to hold the histograms for all subjects
+        fig, axes = plt.subplots(nrows=len(subjects), ncols=1, figsize=(12, 6 * len(subjects)))  # Adjust height based on the number of subjects
 
-        # Display the current subject's histogram
-        subject = subjects[st.session_state.hist_index]
-        fig, ax = plt.subplots(figsize=(12, 6))
-        df[subject].hist(bins=20, ax=ax, color='skyblue', edgecolor='black')
-        plt.title(f'Histogram of {subject} Scores', fontsize=20)
-        plt.xlabel('Scores', fontsize=14)
-        plt.ylabel('Frequency', fontsize=14)
-        st.pyplot(fig)
+        for i, subject in enumerate(subjects):
+            df[subject].hist(bins=20, ax=axes[i], color='skyblue', edgecolor='black')
+            axes[i].set_title(f'Histogram of {subject} Scores', fontsize=20)
+            axes[i].set_xlabel('Scores', fontsize=14)
+            axes[i].set_ylabel('Frequency', fontsize=14)
 
-        # Insights for the current subject
-        insights = {
-            'Hindi': "Hindi has a balanced distribution of scores, with a great majority of students scoring high, indicating overall good performance.",
-            'English': "English scores appear bimodal, reflecting two groups of students: those who excel and those who struggle, possibly due to varied language proficiencies.",
-            'Science': "Science scores are centralized around the average, suggesting that this subject has roughly equal difficulty for most students.",
-            'Maths': "The distribution of Maths scores is skewed towards lower scores, indicating that many students find Maths particularly challenging.",
-            'History': "History shows a balanced distribution, similar to Hindi, with most students scoring well.",
-            'Geography': "Geography scores are also centralized, indicating a similar level of difficulty as Science."
-        }
-        
+            # Insights for each subject
+            insights = {
+                'Hindi': "Hindi has a balanced distribution of scores, with a great majority of students scoring high, indicating overall good performance.",
+                'English': "English scores appear bimodal, reflecting two groups of students: those who excel and those who struggle, possibly due to varied language proficiencies.",
+                'Science': "Science scores are centralized around the average, suggesting that this subject has roughly equal difficulty for most students.",
+                'Maths': "The distribution of Maths scores is skewed towards lower scores, indicating that many students find Maths particularly challenging.",
+                'History': "History shows a balanced distribution, similar to Hindi, with most students scoring well.",
+                'Geography': "Geography scores are also centralized, indicating a similar level of difficulty as Science."
+            }
+
+        # Display insights for each subject
         st.markdown(f"### 📝 Insights for {subject}")
         st.write(insights[subject])
 
-        # Navigation buttons for histograms
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            if st.button("⬅️ Previous"):
-                if st.session_state.hist_index > 0:
-                    st.session_state.hist_index -= 1
-        with col2:
-            if st.button("➡️ Next"):
-                if st.session_state.hist_index < len(subjects) - 1:
-                    st.session_state.hist_index += 1
+        st.pyplot(fig)
+
 # Box Plots Section
     elif options == "Box Plots":
         st.subheader("📦 Box Plots of Exam Scores")
