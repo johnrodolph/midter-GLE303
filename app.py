@@ -19,7 +19,6 @@ def main():
     st.sidebar.title("🗺️ Navigation")
     options = st.sidebar.radio("Select a Section:", 
                                 ["Introduction",
-                                 "Data Overview",
                                  "Descriptive Statistics", 
                                  "Histograms", 
                                  "Box Plots", 
@@ -51,45 +50,6 @@ def main():
         if st.checkbox("Show Raw Data"):
             st.subheader("🗃️ Raw Data")
             st.write(df)
-
-    # Data Overview Section
-    elif options == "Data Overview":
-        st.subheader("📊 Data Overview")
-        st.markdown("""
-        This section provides an overview of the dataset, including key statistics and insights about the data.
-
-        ### Dataset Structure
-        - **Number of Rows**: 1000
-        - **Number of Columns**: 10
-
-        ### Column Descriptions:
-        | Column Name     | Description                                              |
-        |------------------|---------------------------------------------------------|
-        | **Student no.**  | Unique identifier for each student (Integer)           |
-        | **Hindi**        | Marks obtained in Hindi (Float)                         |
-        | **English**      | Marks obtained in English (Float)                       |
-        | **Science**      | Marks obtained in Science (Float)                       |
-        | **Maths**        | Marks obtained in Maths (Float)                         |
-        | **History**      | Marks obtained in History (Float)                       |
-        | **Geography**    | Marks obtained in Geography (Float)                     |
-        | **Total**        | Total marks obtained across all subjects (Float)       |
-        | **Results**      | Pass/Fail indicator (1 for pass, 0 for fail) (Integer) |
-        | **Div**          | Division category (0: Failed, 1: First, 2: Second, 3: Third) (Integer) |
-
-        ### Summary Statistics:
-        The table below summarizes the statistics of the numeric columns in the dataset.
-        """)
-        
-        # Display summary statistics
-        st.write(df[['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography', 'Total', 'Results', 'Div']].describe())
-
-        st.markdown("""
-        ### Missing Values:
-        It's important to check for any missing values in the dataset, as they may impact the analysis.
-        """)
-        
-        # Check for missing values
-        st.write(df.isnull().sum())
 
     # Descriptive Statistics Section
     elif options == "Descriptive Statistics":
