@@ -70,19 +70,7 @@ def main():
         plt.ylabel('Frequency')
         st.pyplot(fig)
 
-        # Insights for the current subject
-        insights = {
-            'Hindi': "Hindi has a balanced distribution of scores, with a great majority of students scoring high, indicating overall good performance.",
-            'English': "English scores appear bimodal, reflecting two groups of students: those who excel and those who struggle, possibly due to varied language proficiencies.",
-            'Science': "Science scores are centralized around the average, suggesting that this subject has roughly equal difficulty for most students.",
-            'Maths': "The distribution of Maths scores is skewed towards lower scores, indicating that many students find Maths particularly challenging.",
-            'History': "History shows a balanced distribution, similar to Hindi, with most students scoring well.",
-            'Geography': "Geography scores are also centralized, indicating a similar level of difficulty as Science."
-        }
-        
-        st.markdown(f"### Insights for {subject}")
-        st.write(insights[subject])
-
+       
         # Navigation buttons for histograms
         col1, col2 = st.columns([1, 1])
         with col1:
