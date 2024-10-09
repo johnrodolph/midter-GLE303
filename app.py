@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
+
 @st.cache_data
 def load_data():
     df = pd.read_csv('results.csv')
@@ -55,33 +56,26 @@ def main():
     # Histograms Section
     elif options == "Histograms":
         st.subheader("Histograms of Exam Scores")
-        subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
+        subjects = ['Hindi', 'History', 'English', 'Science', 'Geography', 'Maths']
         
         # Session state for keeping track of current index
         if 'hist_index' not in st.session_state:
             st.session_state.hist_index = 0
 
-        # Display the current subject's histogram
-        subject = subjects[st.session_state.hist_index]
-        fig, ax = plt.subplots(figsize=(12, 8))
-        df[subject].hist(bins=20, ax=ax)
-        plt.title(f'Histogram of {subject} Scores')
-        plt.xlabel('Scores')
-        plt.ylabel('Frequency')
-        st.pyplot(fig)
+        # Determine subjects for the current page
+        if st.session_state.hist_index < 2:
+            current_subjects = subjects[st.session_state.hist_index * 2:st.session_state.hist_index * 2 + 2]
+        else:
+            current_subjects = subjects[st.session_state.hist_index * 2:st.session_state.hist_index * 2 + 1]
 
-        # Display insights for the current subject
-        insights = {
-            'Hindi': "Hindi has a balanced distribution of scores, with a great majority of students scoring high, indicating overall good performance.",
-            'English': "English scores appear bimodal, reflecting two groups of students: those who excel and those who struggle, possibly due to varied language proficiencies.",
-            'Science': "Science scores are centralized around the average, suggesting that this subject has roughly equal difficulty for most students.",
-            'Maths': "The distribution of Maths scores is skewed towards lower scores, indicating that many students find Maths particularly challenging.",
-            'History': "History shows a balanced distribution, similar to Hindi, with most students scoring well.",
-            'Geography': "Geography scores are also centralized, indicating a similar level of difficulty as Science."
-        }
-        
-        st.markdown(f"### Insights for {subject}")
-        st.write(insights[subject])
+        # Display histograms for the current subjects
+        for subject in current_subjects:
+            fig, ax = plt.subplots(figsize=(12, 6))
+            df[subject].hist(bins=20, ax=ax)
+            plt.title(f'Histogram of {subject} Scores')
+            plt.xlabel('Scores')
+            plt.ylabel('Frequency')
+            st.pyplot(fig)
 
         # Navigation buttons for histograms
         col1, col2 = st.columns([1, 1])
@@ -91,25 +85,31 @@ def main():
                     st.session_state.hist_index -= 1
         with col2:
             if st.button("Next"):
-                if st.session_state.hist_index < len(subjects) - 1:
+                if st.session_state.hist_index < 3:  # Four pages total
                     st.session_state.hist_index += 1
 
     # Box Plots Section
     elif options == "Box Plots":
         st.subheader("Box Plots of Exam Scores")
-        subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
+        subjects = ['Hindi', 'History', 'English', 'Science', 'Geography', 'Maths']
         
         # Session state for keeping track of current box plot index
         if 'box_index' not in st.session_state:
             st.session_state.box_index = 0
 
-        # Display the current subject's box plot
-        subject = subjects[st.session_state.box_index]
-        fig, ax = plt.subplots(figsize=(12, 8))
-        sns.boxplot(y=df[subject], ax=ax)
-        plt.title(f'Box Plot of {subject} Scores')
-        plt.ylabel('Scores')
-        st.pyplot(fig)
+        # Determine subjects for the current page
+        if st.session_state.box_index < 2:
+            current_subjects = subjects[st.session_state.box_index * 2:st.session_state.box_index * 2 + 2]
+        else:
+            current_subjects = subjects[st.session_state.box_index * 2:st.session_state.box_index * 2 + 1]
+
+        # Display box plots for the current subjects
+        for subject in current_subjects:
+            fig, ax = plt.subplots(figsize=(12, 6))
+            sns.boxplot(y=df[subject], ax=ax)
+            plt.title(f'Box Plot of {subject} Scores')
+            plt.ylabel('Scores')
+            st.pyplot(fig)
 
         # Navigation buttons for box plots
         col1, col2 = st.columns([1, 1])
@@ -119,7 +119,7 @@ def main():
                     st.session_state.box_index -= 1
         with col2:
             if st.button("Next"):
-                if st.session_state.box_index < len(subjects) - 1:
+                if st.session_state.box_index < 3:  # Four pages total
                     st.session_state.box_index += 1
 
     # Correlation Matrix Section
