@@ -19,9 +19,10 @@ def main():
     st.sidebar.title("🗺️ Navigation")
     options = st.sidebar.radio("Select a Section:", 
                                 ["Introduction",
+                                 "Data Overview",
                                  "Descriptive Statistics", 
                                  "Histograms", 
-                                 "Box Plots"
+                                 "Box Plots", 
                                  "Correlation Matrix", 
                                  "Conclusion"])
 
@@ -51,6 +52,45 @@ def main():
             st.subheader("🗃️ Raw Data")
             st.write(df)
 
+    # Data Overview Section
+    elif options == "Data Overview":
+        st.subheader("📊 Data Overview")
+        st.markdown("""
+        This section provides an overview of the dataset, including key statistics and insights about the data.
+
+        ### Dataset Structure
+        - **Number of Rows**: 1000
+        - **Number of Columns**: 10
+
+        ### Column Descriptions:
+        | Column Name     | Description                                              |
+        |------------------|---------------------------------------------------------|
+        | **Student no.**  | Unique identifier for each student (Integer)           |
+        | **Hindi**        | Marks obtained in Hindi (Float)                         |
+        | **English**      | Marks obtained in English (Float)                       |
+        | **Science**      | Marks obtained in Science (Float)                       |
+        | **Maths**        | Marks obtained in Maths (Float)                         |
+        | **History**      | Marks obtained in History (Float)                       |
+        | **Geography**    | Marks obtained in Geography (Float)                     |
+        | **Total**        | Total marks obtained across all subjects (Float)       |
+        | **Results**      | Pass/Fail indicator (1 for pass, 0 for fail) (Integer) |
+        | **Div**          | Division category (0: Failed, 1: First, 2: Second, 3: Third) (Integer) |
+
+        ### Summary Statistics:
+        The table below summarizes the statistics of the numeric columns in the dataset.
+        """)
+        
+        # Display summary statistics
+        st.write(df[['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography', 'Total', 'Results', 'Div']].describe())
+
+        st.markdown("""
+        ### Missing Values:
+        It's important to check for any missing values in the dataset, as they may impact the analysis.
+        """)
+        
+        # Check for missing values
+        st.write(df.isnull().sum())
+
     # Descriptive Statistics Section
     elif options == "Descriptive Statistics":
         st.subheader("📊 Descriptive Statistics")
@@ -73,8 +113,8 @@ def main():
         plt.xlabel('Scores', fontsize=14)
         plt.ylabel('Frequency', fontsize=14)
         st.pyplot(fig)
-        
-         # Insights for the current subject
+
+        # Insights for the current subject
         insights = {
             'Hindi': "Hindi has a balanced distribution of scores, with a great majority of students scoring high, indicating overall good performance.",
             'English': "English scores appear bimodal, reflecting two groups of students: those who excel and those who struggle, possibly due to varied language proficiencies.",
@@ -86,7 +126,6 @@ def main():
         
         st.markdown(f"### 📝 Insights for {subject}")
         st.write(insights[subject])
-     
 
         # Navigation buttons for histograms
         col1, col2 = st.columns([1, 1])
@@ -99,13 +138,15 @@ def main():
                 if st.session_state.hist_index < len(subjects) - 1:
                     st.session_state.hist_index += 1
 
-    
     # Box Plots Section
     elif options == "Box Plots":
         st.subheader("📦 Box Plots of Exam Scores")
         subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
         
-      
+        # Session state for keeping track of current box plot index
+        if 'box_index' not in st.session_state:
+            st.session_state.box_index = 0
+
         # Display the current subject's box plot
         subject = subjects[st.session_state.box_index]
         fig, ax = plt.subplots(figsize=(12, 6))
@@ -114,7 +155,16 @@ def main():
         plt.ylabel('Scores', fontsize=14)
         st.pyplot(fig)
 
-      
+        # Navigation buttons for box plots
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            if st.button("⬅️ Previous"):
+                if st.session_state.box_index > 0:
+                    st.session_state.box_index -= 1
+        with col2:
+            if st.button("➡️ Next"):
+                if st.session_state.box_index < len(subjects) - 1:
+                    st.session_state.box_index += 1
 
     # Correlation Matrix Section
     elif options == "Correlation Matrix":
@@ -131,7 +181,7 @@ def main():
     elif options == "Conclusion":
         st.title("📋 Conclusion")
         st.subheader("📉 Subject Difficulty:")
-        st.markdown("""Math appears to be the subject with the highest struggles while Hindi and History appear to be doing relatively better.""")
+        st.markdown("""Maths appears to be the subject with the highest struggles while Hindi and History appear to be doing relatively better.""")
         st.subheader("🧠 Possible Knowledge /Skill Gaps: ")
         st.markdown("""The bimodal distribution for English suggests a potential extreme divergence of language abilities in the student population. This could potentially require more tailor-made teaching strategies.""")
         st.subheader("📊 Outliers & Performance Gaps: ")
