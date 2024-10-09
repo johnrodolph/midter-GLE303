@@ -99,6 +99,21 @@ def main():
                     st.session_state.hist_index += 1
 
     
+    # Box Plots Section
+    elif options == "Box Plots":
+        st.subheader("📦 Box Plots of Exam Scores")
+        subjects = ['Hindi', 'English', 'Science', 'Maths', 'History', 'Geography']
+        
+      
+        # Display the current subject's box plot
+        subject = subjects[st.session_state.box_index]
+        fig, ax = plt.subplots(figsize=(12, 6))
+        sns.boxplot(y=df[subject], ax=ax, color='lightgreen')
+        plt.title(f'Box Plot of {subject} Scores', fontsize=20)
+        plt.ylabel('Scores', fontsize=14)
+        st.pyplot(fig)
+
+      
 
     # Correlation Matrix Section
     elif options == "Correlation Matrix":
